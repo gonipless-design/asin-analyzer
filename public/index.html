@@ -218,8 +218,8 @@ function displayResults(data) {
   document.getElementById('total-score').textContent = `${data.total}/100`;
   document.getElementById('total-score').style.color = data.gradeColor;
 
-  const labels = { title: 'Title', bullets: 'Bullet Points', description: 'Description', images: 'Images', reviews: 'Reviews' };
-  const colors = { title: '#1B4F72', bullets: '#1D8348', description: '#7D3C98', images: '#E67E22', reviews: '#D4AC0D' };
+  const labels = { title: 'Title', bullets: 'Bullet Points', description: 'Description', images: 'Images', reviews: 'Reviews', bsr: 'Best Seller Rank', price: 'Price Strategy', qa: 'Q&A Content', video: 'Video Content', brand: 'Brand & A+' };
+  const colors = { title: '#1B4F72', bullets: '#1D8348', description: '#7D3C98', images: '#E67E22', reviews: '#D4AC0D', bsr: '#2E86C1', price: '#17A589', qa: '#884EA0', video: '#C0392B', brand: '#1ABC9C' };
 
   let barsHTML = '';
   for (const [key, score] of Object.entries(data.scores)) {
