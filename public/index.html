@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Amazon Listing Analyzer | Trusted by $1M+ Sellers</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f6f9; color: #212121; }
+
+  /* HEADER */
+  header { background: #0D1B2A; padding: 16px 20px; text-align: center; }
+  header h1 { color: #D4AC0D; font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #0D1B2A 0%, #1B4F72 100%); padding: 60px 20px 50px; text-align: center; }
+  .hero h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); color: #fff; font-weight: 800; line-height: 1.25; max-width: 700px; margin: 0 auto 12px; }
+  .hero h2 span { color: #D4AC0D; }
+  .hero p { color: #A9CCE3; font-size: 1.05rem; margin-bottom: 36px; }
+  .trust-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(212,172,13,0.15); border: 1px solid #D4AC0D; border-radius: 50px; padding: 6px 16px; color: #D4AC0D; font-size: 0.85rem; font-weight: 600; margin-bottom: 32px; }
+
+  /* SEARCH BOX */
+  .search-box { background: #fff; border-radius: 12px; padding: 32px; max-width: 540px; margin: 0 auto; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+  .search-box label { display: block; font-weight: 700; color: #0D1B2A; margin-bottom: 8px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .search-box input { width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border 0.2s; font-family: monospace; letter-spacing: 2px; text-transform: uppercase; }
+  .search-box input:focus { outline: none; border-color: #1B4F72; }
+  .search-box button { width: 100%; padding: 16px; background: #D4AC0D; color: #0D1B2A; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 800; cursor: pointer; margin-top: 12px; transition: background 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+  .search-box button:hover { background: #B8960B; }
+  .search-box button:disabled { background: #ccc; cursor: not-allowed; }
+  .example-asins { margin-top: 12px; font-size: 0.8rem; color: #888; text-align: center; }
+  .example-asins span { color: #1B4F72; cursor: pointer; text-decoration: underline; margin: 0 4px; }
+
+  /* WHAT WE ANALYZE */
+  .features { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+  .feature-card { background: #fff; border-radius: 10px; padding: 20px 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .feature-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .feature-card h3 { font-size: 0.85rem; font-weight: 700; color: #0D1B2A; margin-bottom: 4px; }
+  .feature-card p { font-size: 0.75rem; color: #666; }
+
+  /* RESULTS */
+  #results { max-width: 700px; margin: 0 auto 40px; padding: 0 20px; display: none; }
+  .result-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden; }
+  .result-header { background: #0D1B2A; padding: 24px; display: flex; justify-content: space-between; align-items: center; }
+  .result-header h3 { color: #fff; font-size: 1rem; max-width: 420px; line-height: 1.4; }
+  .grade-badge { font-size: 3rem; font-weight: 900; line-height: 1; }
+  .result-body { padding: 24px; }
+  .score-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+  .score-row:last-child { border-bottom: none; }
+  .score-label { flex: 0 0 130px; font-weight: 700; font-size: 0.9rem; color: #0D1B2A; }
+  .score-bar-wrap { flex: 1; background: #f0f0f0; border-radius: 50px; height: 10px; }
+  .score-bar { height: 10px; border-radius: 50px; transition: width 1s ease; }
+  .score-num { flex: 0 0 45px; text-align: right; font-weight: 700; font-size: 0.9rem; color: #0D1B2A; }
+  .total-row { background: #f7f8fa; border-radius: 8px; padding: 16px; margin: 16px 0; display: flex; justify-content: space-between; align-items: center; }
+  .total-row .label { font-weight: 700; font-size: 1rem; color: #0D1B2A; }
+  .total-row .value { font-size: 1.5rem; font-weight: 900; }
+
+  /* EMAIL GATE */
+  .email-gate { background: linear-gradient(135deg, #0D1B2A, #1B4F72); border-radius: 10px; padding: 24px; margin: 20px 0; text-align: center; }
+  .email-gate h3 { color: #D4AC0D; font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
+  .email-gate p { color: #A9CCE3; font-size: 0.9rem; margin-bottom: 16px; }
+  .email-gate input[type=email] { width: 100%; padding: 12px 14px; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 10px; }
+  .email-gate button { width: 100%; padding: 13px; background: #D4AC0D; color: #0D1B2A; border: none; border-radius: 8px; font-size: 1rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+  .checkbox-row { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; text-align: left; }
+  .checkbox-row input { margin-top: 2px; }
+  .checkbox-row label { font-size: 0.8rem; color: #A9CCE3; }
+
+  /* RECS */
+  .rec-item { padding: 14px 0; border-bottom: 1px solid #f0f0f0; }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-item .rec-label { font-weight: 700; font-size: 0.9rem; color: #0D1B2A; margin-bottom: 4px; }
+  .rec-item .rec-text { font-size: 0.88rem; color: #444; line-height: 1.5; }
+  .recs-section h4 { font-size: 1rem; font-weight: 800; color: #0D1B2A; margin: 20px 0 8px; padding-top: 16px; border-top: 2px solid #D4AC0D; }
+
+  /* LOADING */
+  .loading { text-align: center; padding: 40px; display: none; }
+  .spinner { width: 40px; height: 40px; border: 4px solid #f0f0f0; border-top-color: #D4AC0D; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ERROR */
+  .error-msg { background: #fdf2f2; border: 1px solid #e74c3c; border-radius: 8px; padding: 14px; color: #c0392b; font-size: 0.9rem; margin-top: 12px; display: none; }
+
+  /* FOOTER */
+  footer { background: #0D1B2A; color: #666; text-align: center; padding: 24px; font-size: 0.8rem; margin-top: 40px; }
+  footer p { color: #4a6fa5; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ðŸ† Amazon Listing Analyzer â€” Free Tool for Amazon Sellers</h1>
+</header>
+
+<div class="hero">
+  <div class="trust-badge">â­ Trusted by sellers doing $1M+ on Amazon</div>
+  <h2>Is Your Amazon Listing <span>Losing You Money?</span><br>Find Out in 30 Seconds â€” Free</h2>
+  <p>Enter any ASIN below and get an instant Aâ€“F grade on your listing quality</p>
+
+  <div class="search-box">
+    <label for="asin-input">Enter Your Amazon ASIN</label>
+    <input type="text" id="asin-input" placeholder="e.g. B08N5WRWNW" maxlength="10" autocomplete="off">
+    <button id="analyze-btn" onclick="analyzeASIN()">ðŸ” Analyze My Listing Now â€” It's Free</button>
+    <div class="example-asins">
+      Try an example:
+      <span onclick="tryASIN('B0BSHF7WHW')">B0BSHF7WHW</span>
+      <span onclick="tryASIN('B09B8YWXDF')">B09B8YWXDF</span>
+    </div>
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+</div>
+
+<!-- WHAT WE ANALYZE -->
+<div class="features">
+  <div class="feature-card"><div class="icon">ðŸ“</div><h3>Title Quality</h3><p>Length, keywords & clarity</p></div>
+  <div class="feature-card"><div class="icon">âœ…</div><h3>Bullet Points</h3><p>Count, length & benefits</p></div>
+  <div class="feature-card"><div class="icon">ðŸ“–</div><h3>Description</h3><p>A+ content & detail</p></div>
+  <div class="feature-card"><div class="icon">ðŸ“¸</div><h3>Images</h3><p>Count & quality check</p></div>
+  <div class="feature-card"><div class="icon">â­</div><h3>Reviews</h3><p>Rating & velocity</p></div>
+</div>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p style="color:#666">Analyzing your listing...</p>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="result-card">
+    <div class="result-header">
+      <h3 id="result-title">Your Listing</h3>
+      <div class="grade-badge" id="grade-badge">â€”</div>
+    </div>
+    <div class="result-body">
+      <div id="score-bars"></div>
+      <div class="total-row">
+        <span class="label">Overall Score</span>
+        <span class="value" id="total-score">â€”/100</span>
+      </div>
+
+      <!-- EMAIL GATE -->
+      <div class="email-gate" id="email-gate">
+        <h3>ðŸ”’ Unlock Your Full Analysis</h3>
+        <p>Enter your email to see exactly <strong>what to fix</strong> and how to improve your grade</p>
+        <input type="email" id="lead-email" placeholder="Enter your email address">
+        <button onclick="unlockReport()">ðŸš€ Show Me How to Improve</button>
+        <div class="checkbox-row">
+          <input type="checkbox" id="newsletter-check" checked>
+          <label for="newsletter-check">Also subscribe me to the FREE weekly Amazon Seller Newsletter â€” tips from a $3M+ seller</label>
+        </div>
+      </div>
+
+      <!-- FULL RECS (shown after email) -->
+      <div id="full-recs" style="display:none">
+        <div class="recs-section">
+          <h4>ðŸ“‹ Your Personalized Improvement Plan</h4>
+          <div id="recs-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Built for Amazon sellers who want more sales, not more guesswork.</p>
+  <p style="margin-top:8px;color:#333">Â© 2025 Amazon Listing Analyzer. Free tool â€” no credit card required.</p>
+</footer>
+
+<script>
+let currentASIN = '';
+
+function tryASIN(asin) {
+  document.getElementById('asin-input').value = asin;
+  analyzeASIN();
+}
+
+async function analyzeASIN() {
+  const asin = document.getElementById('asin-input').value.trim().toUpperCase();
+  if (!asin || asin.length !== 10) {
+    showError('Please enter a valid 10-character ASIN (e.g., B08N5WRWNW)');
+    return;
+  }
+
+  currentASIN = asin;
+  hideError();
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('analyze-btn').disabled = true;
+
+  try {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ asin })
+    });
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Analysis failed');
+
+    document.getElementById('loading').style.display = 'none';
+    displayResults(data);
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    showError(err.message);
+    document.getElementById('analyze-btn').disabled = false;
+  }
+}
+
+function displayResults(data) {
+  document.getElementById('result-title').textContent = data.title || data.asin;
+  const gradeEl = document.getElementById('grade-badge');
+  gradeEl.textContent = data.grade;
+  gradeEl.style.color = data.gradeColor;
+
+  document.getElementById('total-score').textContent = `${data.total}/100`;
+  document.getElementById('total-score').style.color = data.gradeColor;
+
+  const labels = { title: 'Title', bullets: 'Bullet Points', description: 'Description', images: 'Images', reviews: 'Reviews' };
+  const colors = { title: '#1B4F72', bullets: '#1D8348', description: '#7D3C98', images: '#E67E22', reviews: '#D4AC0D' };
+
+  let barsHTML = '';
+  for (const [key, score] of Object.entries(data.scores)) {
+    const pct = (score / 20) * 100;
+    barsHTML += `
+      <div class="score-row">
+        <span class="score-label">${labels[key]}</span>
+        <div class="score-bar-wrap">
+          <div class="score-bar" style="width:${pct}%;background:${colors[key]}"></div>
+        </div>
+        <span class="score-num">${score}/20</span>
+      </div>`;
+  }
+  document.getElementById('score-bars').innerHTML = barsHTML;
+
+  document.getElementById('email-gate').style.display = 'block';
+  document.getElementById('full-recs').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function unlockReport() {
+  const email = document.getElementById('lead-email').value.trim();
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/unlock', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, asin: currentASIN })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+
+    document.getElementById('email-gate').style.display = 'none';
+
+    const labels = { title: 'ðŸ“ Title', bullets: 'âœ… Bullet Points', description: 'ðŸ“– Description / A+ Content', images: 'ðŸ“¸ Images', reviews: 'â­ Reviews & Rating' };
+    let recsHTML = '';
+    for (const [key, rec] of Object.entries(data.recs)) {
+      recsHTML += `<div class="rec-item"><div class="rec-label">${labels[key]}</div><div class="rec-text">${rec}</div></div>`;
+    }
+    document.getElementById('recs-content').innerHTML = recsHTML;
+    document.getElementById('full-recs').style.display = 'block';
+  } catch (err) {
+    alert(err.message || 'Something went wrong. Please try again.');
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  document.getElementById('analyze-btn').disabled = false;
+}
+function hideError() {
+  document.getElementById('error-msg').style.display = 'none';
+}
+</script>
+</body>
+</html>
