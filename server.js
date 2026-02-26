@@ -4,6 +4,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(express.json());
@@ -66,7 +67,6 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
 </table></td></tr></table></body></html>`;
 
   try {
-    const nodemailer = require('nodemailer');
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: 'spencerwhiteclaw@gmail.com', pass: 'fowh bhgz bpsv hdmo' }
