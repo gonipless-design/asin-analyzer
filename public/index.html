@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Amazon Listing Analyzer | Trusted by $1M+ Sellers</title>
+<title>Listing Doctor | Free Amazon Listing Analyzer</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f6f9; color: #212121; }
@@ -87,7 +87,7 @@
 <body>
 
 <header>
-  <h1>ðŸ† Amazon Listing Analyzer â€” Free Tool for Amazon Sellers</h1>
+  <h1>Listing Doctor â€” Amazon Listing Analyzer</h1>
 </header>
 
 <div class="hero">
@@ -98,7 +98,7 @@
   <div class="search-box">
     <label for="asin-input">Enter Your Amazon ASIN</label>
     <input type="text" id="asin-input" placeholder="e.g. B08N5WRWNW" maxlength="10" autocomplete="off">
-    <button id="analyze-btn" onclick="analyzeASIN()">ðŸ” Analyze My Listing Now â€” It's Free</button>
+    <button id="analyze-btn" onclick="analyzeASIN()">Analyze My Listing â€” Free</button>
     <div class="example-asins">
       Try an example:
       <span onclick="tryASIN('B0BSHF7WHW')">B0BSHF7WHW</span>
@@ -139,10 +139,10 @@
 
       <!-- EMAIL GATE -->
       <div class="email-gate" id="email-gate">
-        <h3>ðŸ”’ Unlock Your Full Analysis</h3>
+        <h3>Unlock Your Full Analysis</h3>
         <p>Enter your email to see exactly <strong>what to fix</strong> and how to improve your grade</p>
         <input type="email" id="lead-email" placeholder="Enter your email address">
-        <button onclick="unlockReport()">ðŸš€ Show Me How to Improve</button>
+        <button onclick="unlockReport()">See My Improvement Plan</button>
         <div class="checkbox-row">
           <input type="checkbox" id="newsletter-check" checked>
           <label for="newsletter-check">Also subscribe me to the FREE weekly Amazon Seller Newsletter â€” tips from a $3M+ seller</label>
@@ -152,7 +152,7 @@
       <!-- FULL RECS (shown after email) -->
       <div id="full-recs" style="display:none">
         <div class="recs-section">
-          <h4>ðŸ“‹ Your Personalized Improvement Plan</h4>
+          <h4>Your Improvement Plan</h4>
           <div id="recs-content"></div>
         </div>
       </div>
@@ -162,7 +162,7 @@
 
 <footer>
   <p>Built for Amazon sellers who want more sales, not more guesswork.</p>
-  <p style="margin-top:8px;color:#333">Â© 2025 Amazon Listing Analyzer. Free tool â€” no credit card required.</p>
+  <p style="margin-top:8px;color:#333">Â© 2025 Listing Doctor. Free tool â€” no credit card required.</p>
 </footer>
 
 <script>
@@ -256,7 +256,7 @@ async function unlockReport() {
 
     document.getElementById('email-gate').style.display = 'none';
 
-    const labels = { title: 'ðŸ“ Title', bullets: 'âœ… Bullet Points', description: 'ðŸ“– Description / A+ Content', images: 'ðŸ“¸ Images', reviews: 'â­ Reviews & Rating' };
+    const labels = { title: 'Title', bullets: 'Bullet Points', description: 'Description / A+ Content', images: 'Images', reviews: 'Reviews & Rating' };
     let recsHTML = '';
     for (const [key, rec] of Object.entries(data.recs)) {
       recsHTML += `<div class="rec-item"><div class="rec-label">${labels[key]}</div><div class="rec-text">${rec}</div></div>`;
