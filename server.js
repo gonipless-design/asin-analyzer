@@ -51,7 +51,7 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
         <tr>
           <td style="background:#0D1B2A;padding:24px 32px;text-align:center">
             <p style="color:#D4AC0D;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin:0">
-              LISTING DOCTOR — AMAZON LISTING ANALYZER
+              LISTING DOCTOR &mdash; AMAZON LISTING ANALYZER
             </p>
           </td>
         </tr>
@@ -60,11 +60,11 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
         <tr>
           <td style="background:linear-gradient(135deg,#0D1B2A,#1B4F72);padding:44px 32px;text-align:center">
             <div style="font-size:48px;margin-bottom:16px">${gradeEmoji}</div>
-            <h1 style="color:#fff;font-size:28px;font-weight:900;margin:0 0 8px">
-              ${name}, your listing scored a <span style="color:#D4AC0D">${grade}</span>
+            <h1 style="color:#fff;font-size:26px;font-weight:900;margin:0 0 8px;line-height:1.2">
+              ${name}, your listing just scored a <span style="color:#D4AC0D">${grade}</span>
             </h1>
-            <p style="color:#A9CCE3;font-size:16px;margin:0">
-              ASIN: <strong style="color:#fff">${asin}</strong> — Here's your complete improvement plan
+            <p style="color:#A9CCE3;font-size:15px;margin:0">
+              ASIN: <strong style="color:#fff">${asin}</strong> &mdash; Your full improvement plan is below.
             </p>
           </td>
         </tr>
@@ -75,42 +75,50 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
             <p style="color:#212121;font-size:16px;line-height:1.7;margin:0 0 20px">
               Hey ${name},
             </p>
+            <p style="color:#444;font-size:15px;line-height:1.7;margin:0 0 8px">
+              Here's the unfiltered truth: <strong style="color:#212121">most Amazon sellers are bleeding $3,000&ndash;$15,000/month not because their product is bad</strong> &mdash; but because their listing doesn't close.
+            </p>
             <p style="color:#444;font-size:15px;line-height:1.7;margin:0 0 20px">
-              Your listing analysis is in. Here's the honest truth: <strong>most Amazon sellers are losing 20–40% of their potential sales because of fixable listing issues.</strong> The good news? You just found out exactly where yours are.
+              Buyers land. They don't buy. You blame the algorithm. The algorithm blames you. And nothing changes &mdash; until you fix the listing.
+            </p>
+            <p style="color:#444;font-size:15px;line-height:1.7;margin:0 0 20px">
+              <strong style="color:#212121">Good news: you just got the diagnosis.</strong> Below is your full analysis. Don't let it sit. Pick the #1 item on the list and fix it today.
             </p>
 
             <!-- GRADE BOX -->
             <div style="background:#f7f8fa;border-left:4px solid #D4AC0D;border-radius:0 8px 8px 0;padding:20px 24px;margin:0 0 28px">
-              <p style="color:#0D1B2A;font-size:18px;font-weight:800;margin:0 0 4px">Overall Grade: ${grade}</p>
-              <p style="color:#666;font-size:13px;margin:0">Every point below is a revenue opportunity you can capture</p>
+              <p style="color:#0D1B2A;font-size:20px;font-weight:900;margin:0 0 4px">Overall Grade: <span style="color:#D4AC0D">${grade}</span></p>
+              <p style="color:#666;font-size:13px;margin:0">Every point below is a revenue opportunity you can capture &mdash; starting today.</p>
             </div>
 
             <!-- RECOMMENDATIONS -->
             ${recsList ? `
-            <h3 style="color:#0D1B2A;font-size:17px;font-weight:800;margin:0 0 16px;padding-top:4px;border-top:2px solid #D4AC0D">
-              🎯 Your Improvement Plan
-            </h3>
-            <ul style="color:#444;font-size:14px;line-height:1.6;padding-left:20px;margin:0 0 28px">
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px">
+              <tr><td style="border-top:2px solid #D4AC0D;padding-top:16px;padding-bottom:12px">
+                <h3 style="color:#0D1B2A;font-size:16px;font-weight:800;margin:0">&#127919; Your Improvement Plan</h3>
+              </td></tr>
+            </table>
+            <ul style="color:#444;font-size:14px;line-height:1.7;padding-left:20px;margin:0 0 28px">
               ${recsList}
             </ul>
             ` : ''}
 
-            <!-- URGENCY -->
+            <!-- URGENCY CTA -->
             <div style="background:#0D1B2A;border-radius:12px;padding:28px;margin:0 0 28px;text-align:center">
-              <p style="color:#D4AC0D;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px">
-                ⚡ THE CLOCK IS TICKING
+              <p style="color:#D4AC0D;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 12px">
+                &#9889; Don't Let This Become Another Tab You'll Get To Later
               </p>
               <p style="color:#A9CCE3;font-size:15px;line-height:1.65;margin:0 0 20px">
-                Every day your listing sits with a suboptimal grade, you're paying Amazon PPC to drive traffic to a page that doesn't convert. That's not a traffic problem. That's a money leak.
+                Every day your listing sits with a suboptimal grade, you're paying PPC to drive traffic to a page that doesn't convert. That's not a traffic problem. That's your money walking out the door.
               </p>
-              <a href="https://asinanalyzer.app?ref=email" style="display:inline-block;padding:14px 32px;background:#D4AC0D;color:#0D1B2A;border-radius:50px;font-size:15px;font-weight:800;text-decoration:none;text-transform:uppercase;letter-spacing:1px">
-                Analyze Another ASIN →
+              <a href="https://asinanalyzer.app?ref=email" style="display:inline-block;padding:14px 32px;background:#D4AC0D;color:#0D1B2A;border-radius:50px;font-size:14px;font-weight:800;text-decoration:none;text-transform:uppercase;letter-spacing:1px">
+                Analyze Another ASIN &rarr;
               </a>
             </div>
 
             <p style="color:#888;font-size:13px;line-height:1.6;margin:0">
-              Reply to this email with any questions. We read every response.<br>
-              — The Listing Doctor Team
+              Got a question? Reply to this email. We read every single one.<br>
+              <strong style="color:#666">&mdash; The Listing Doctor Team</strong>
             </p>
           </td>
         </tr>
@@ -119,8 +127,8 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
         <tr>
           <td style="background:#f4f6f9;padding:20px 32px;text-align:center;border-top:1px solid #e8e8e8">
             <p style="color:#999;font-size:12px;margin:0">
-              © 2025 Listing Doctor · <a href="https://asinanalyzer.app" style="color:#1B4F72">asinanalyzer.app</a>
-              <br>You're receiving this because you analyzed your listing. No spam, ever.
+              &copy; 2025 Listing Doctor &middot; <a href="https://asinanalyzer.app" style="color:#1B4F72">asinanalyzer.app</a>
+              <br>You got this because you analyzed a listing. No spam. Unsubscribe anytime.
             </p>
           </td>
         </tr>
@@ -135,7 +143,7 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
     await axios.post('https://api.brevo.com/v3/smtp/email', {
       sender: { name: 'Listing Doctor', email: process.env.BREVO_SENDER_EMAIL || 'noreply@asinanalyzer.app' },
       to: [{ email, name: name }],
-      subject: `${gradeEmoji} Your Amazon Listing Scored a ${grade} — Here's How to Fix It`,
+      subject: `${gradeEmoji} Your listing scored ${grade} — here's exactly what to fix`,
       htmlContent
     }, {
       headers: {
