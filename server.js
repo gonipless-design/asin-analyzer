@@ -73,10 +73,10 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      auth: { user: 'spencerwhiteclaw@gmail.com', pass: 'fowh bhgz bpsv hdmo' }
+      auth: { user: process.env.GMAIL_USER || 'gonipless@gmail.com', pass: process.env.GMAIL_APP_PASSWORD || 'fowh bhgz bpsv hdmo' }
     });
     await transporter.sendMail({
-      from: 'Listing Doctor <spencerwhiteclaw@gmail.com>',
+      from: 'Listing Doctor <' + (process.env.GMAIL_USER || 'gonipless@gmail.com') + '>',
       to: email,
       subject: gradeEmoji + ' Your listing scored ' + grade + ' - 10-point analysis inside',
       html: htmlContent
