@@ -73,10 +73,10 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      auth: { user: process.env.GMAIL_USER || 'gonipless@gmail.com', pass: process.env.GMAIL_APP_PASSWORD || 'fowh bhgz bpsv hdmo' }
+      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD }
     });
     await transporter.sendMail({
-      from: 'Listing Doctor <' + (process.env.GMAIL_USER || 'gonipless@gmail.com') + '>',
+      from: 'Listing Doctor <' + process.env.GMAIL_USER + '>',
       to: email,
       subject: gradeEmoji + ' Your listing scored ' + grade + ' - 10-point analysis inside',
       html: htmlContent
@@ -107,7 +107,7 @@ async function fetchAmazonData(asin) {
   }
 
   try {
-    const scraperApiKey = process.env.SCRAPER_API_KEY || 'a9f67ff7c6a52a9b88988103b0e995ec';
+    const scraperApiKey = process.env.SCRAPER_API_KEY;
     const amazonUrl = 'https://www.amazon.com/dp/' + asin;
     const url = 'https://api.scraperapi.com?api_key=' + scraperApiKey + '&url=' + encodeURIComponent(amazonUrl) + '&render=false';
 
