@@ -25,10 +25,7 @@ function saveLead(email, firstName, asin, grade) {
 
 // ── Send welcome email via Brevo SMTP ────────────────────────────────
 async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
-  if (!process.env.BREVO_API_KEY) {
-    console.log('No BREVO_API_KEY set — skipping email send');
-    return;
-  }
+  // Gmail SMTP - no API key needed
 
   const name = firstName || 'Amazon Seller';
   const gradeEmoji = grade === 'A+' || grade === 'A' ? '🟢' : grade === 'B' ? '🔵' : grade === 'C' ? '🟡' : '🔴';
@@ -140,19 +137,17 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
 </html>`;
 
   try {
-    await axios.post('https://api.brevo.com/v3/smtp/email', {
-      sender: { name: 'Listing Doctor', email: process.env.BREVO_SENDER_EMAIL || 'noreply@asinanalyzer.app' },
-      to: [{ email, name: name }],
-      subject: `${gradeEmoji} Your listing scored ${grade} — here's exactly what to fix`,
-      htmlContent
-    }, {
-      headers: {
-        'api-key': process.env.BREVO_API_KEY,
-        'Content-Type': 'application/json'
-      },
-      timeout: 10000
+    const transporter = require('nodemailer').createTransport({
+      service: 'gmail',
+      auth: { user: 'spencerwhiteclaw@gmail.com', pass: 'fowh bhgz bpsv hdmo' }
     });
-    console.log(`Welcome email sent to ${email}`);
+    await transporter.sendMail({
+      from: 'Listing Doctor <spencerwhiteclaw@gmail.com>',
+      to: email,
+      subject: gradeEmoji + ' Your listing scored ' + grade + ' - here is exactly what to fix',
+      html: htmlContent
+    });
+    console.log('Welcome email sent to ' + email);
   } catch (err) {
     console.error('Failed to send welcome email:', err.response?.data || err.message);
   }
