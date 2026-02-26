@@ -58,8 +58,10 @@
   .email-gate { background: linear-gradient(135deg, #0D1B2A, #1B4F72); border-radius: 10px; padding: 24px; margin: 20px 0; text-align: center; }
   .email-gate h3 { color: #D4AC0D; font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
   .email-gate p { color: #A9CCE3; font-size: 0.9rem; margin-bottom: 16px; }
-  .email-gate input[type=email] { width: 100%; padding: 12px 14px; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 10px; }
+  .email-gate input[type=text], .email-gate input[type=email] { width: 100%; padding: 12px 14px; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 10px; }
+  .email-gate input[type=text]::placeholder, .email-gate input[type=email]::placeholder { color: #999; }
   .email-gate button { width: 100%; padding: 13px; background: #D4AC0D; color: #0D1B2A; border: none; border-radius: 8px; font-size: 1rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+  .email-gate button:hover { background: #B8960B; }
   .checkbox-row { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; text-align: left; }
   .checkbox-row input { margin-top: 2px; }
   .checkbox-row label { font-size: 0.8rem; color: #A9CCE3; }
@@ -87,18 +89,18 @@
 <body>
 
 <header>
-  <h1>Listing Doctor â€” Amazon Listing Analyzer</h1>
+  <h1>Listing Doctor &mdash; Amazon Listing Analyzer</h1>
 </header>
 
 <div class="hero">
-  <div class="trust-badge">â­ Trusted by sellers doing $1M+ on Amazon</div>
-  <h2>Is Your Amazon Listing <span>Losing You Money?</span><br>Find Out in 30 Seconds â€” Free</h2>
-  <p>Enter any ASIN below and get an instant Aâ€“F grade on your listing quality</p>
+  <div class="trust-badge">&#11088; Trusted by sellers doing $1M+ on Amazon</div>
+  <h2>Is Your Amazon Listing <span>Losing You Money?</span><br>Find Out in 30 Seconds &mdash; Free</h2>
+  <p>Enter any ASIN below and get an instant A&ndash;F grade on your listing quality</p>
 
   <div class="search-box">
     <label for="asin-input">Enter Your Amazon ASIN</label>
     <input type="text" id="asin-input" placeholder="e.g. B08N5WRWNW" maxlength="10" autocomplete="off">
-    <button id="analyze-btn" onclick="analyzeASIN()">Analyze My Listing â€” Free</button>
+    <button id="analyze-btn" onclick="analyzeASIN()">Analyze My Listing &mdash; Free</button>
     <div class="example-asins">
       Try an example:
       <span onclick="tryASIN('B0BSHF7WHW')">B0BSHF7WHW</span>
@@ -110,11 +112,11 @@
 
 <!-- WHAT WE ANALYZE -->
 <div class="features">
-  <div class="feature-card"><div class="icon">ðŸ“</div><h3>Title Quality</h3><p>Length, keywords & clarity</p></div>
-  <div class="feature-card"><div class="icon">âœ…</div><h3>Bullet Points</h3><p>Count, length & benefits</p></div>
-  <div class="feature-card"><div class="icon">ðŸ“–</div><h3>Description</h3><p>A+ content & detail</p></div>
-  <div class="feature-card"><div class="icon">ðŸ“¸</div><h3>Images</h3><p>Count & quality check</p></div>
-  <div class="feature-card"><div class="icon">â­</div><h3>Reviews</h3><p>Rating & velocity</p></div>
+  <div class="feature-card"><div class="icon">&#128269;</div><h3>Title Quality</h3><p>Length, keywords &amp; clarity</p></div>
+  <div class="feature-card"><div class="icon">&#9989;</div><h3>Bullet Points</h3><p>Count, length &amp; benefits</p></div>
+  <div class="feature-card"><div class="icon">&#128214;</div><h3>Description</h3><p>A+ content &amp; detail</p></div>
+  <div class="feature-card"><div class="icon">&#128248;</div><h3>Images</h3><p>Count &amp; quality check</p></div>
+  <div class="feature-card"><div class="icon">&#11088;</div><h3>Reviews</h3><p>Rating &amp; velocity</p></div>
 </div>
 
 <!-- LOADING -->
@@ -128,24 +130,25 @@
   <div class="result-card">
     <div class="result-header">
       <h3 id="result-title">Your Listing</h3>
-      <div class="grade-badge" id="grade-badge">â€”</div>
+      <div class="grade-badge" id="grade-badge">&mdash;</div>
     </div>
     <div class="result-body">
       <div id="score-bars"></div>
       <div class="total-row">
         <span class="label">Overall Score</span>
-        <span class="value" id="total-score">â€”/100</span>
+        <span class="value" id="total-score">&mdash;/100</span>
       </div>
 
       <!-- EMAIL GATE -->
       <div class="email-gate" id="email-gate">
-        <h3>Unlock Your Full Analysis</h3>
-        <p>Enter your email to see exactly <strong>what to fix</strong> and how to improve your grade</p>
-        <input type="email" id="lead-email" placeholder="Enter your email address">
-        <button onclick="unlockReport()">See My Improvement Plan</button>
+        <h3>&#128274; Unlock Your Full Analysis</h3>
+        <p>Enter your name &amp; email to see exactly <strong>what to fix</strong> and how to improve your grade</p>
+        <input type="text" id="lead-firstname" placeholder="Your First Name" autocomplete="given-name">
+        <input type="email" id="lead-email" placeholder="Your Email Address" autocomplete="email">
+        <button onclick="unlockReport()">See My Improvement Plan &rarr;</button>
         <div class="checkbox-row">
           <input type="checkbox" id="newsletter-check" checked>
-          <label for="newsletter-check">Also subscribe me to the FREE weekly Amazon Seller Newsletter â€” tips from a $3M+ seller</label>
+          <label for="newsletter-check">Also send me the FREE weekly Amazon Seller tips &mdash; from a $3M+ seller</label>
         </div>
       </div>
 
@@ -162,7 +165,7 @@
 
 <footer>
   <p>Built for Amazon sellers who want more sales, not more guesswork.</p>
-  <p style="margin-top:8px;color:#333">Â© 2025 Listing Doctor. Free tool â€” no credit card required.</p>
+  <p style="margin-top:8px;color:#333">&copy; 2025 Listing Doctor. Free tool &mdash; no credit card required.</p>
 </footer>
 
 <script>
@@ -239,21 +242,34 @@ function displayResults(data) {
 }
 
 async function unlockReport() {
+  const firstName = (document.getElementById('lead-firstname').value || '').trim();
   const email = document.getElementById('lead-email').value.trim();
   if (!email || !email.includes('@')) {
     alert('Please enter a valid email address');
     return;
   }
 
+  const btn = document.querySelector('#email-gate button');
+  const origText = btn.innerHTML;
+  btn.innerHTML = 'Sending...';
+  btn.disabled = true;
+
   try {
     const res = await fetch('/api/unlock', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ email, asin: currentASIN })
+      body: JSON.stringify({ email, firstName, asin: currentASIN })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
 
+    // If server sends redirect signal, go to thank you page
+    if (data.redirect) {
+      window.location.href = data.redirect;
+      return;
+    }
+
+    // Fallback: show inline results
     document.getElementById('email-gate').style.display = 'none';
 
     const labels = { title: 'Title', bullets: 'Bullet Points', description: 'Description / A+ Content', images: 'Images', reviews: 'Reviews & Rating' };
@@ -264,6 +280,8 @@ async function unlockReport() {
     document.getElementById('recs-content').innerHTML = recsHTML;
     document.getElementById('full-recs').style.display = 'block';
   } catch (err) {
+    btn.innerHTML = origText;
+    btn.disabled = false;
     alert(err.message || 'Something went wrong. Please try again.');
   }
 }

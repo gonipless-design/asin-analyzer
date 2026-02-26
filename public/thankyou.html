@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're In — Listing Doctor</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0D1B2A;
+    color: #fff;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: rgba(0,0,0,0.3);
+    padding: 16px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212,172,13,0.2);
+  }
+  header h1 {
+    color: #D4AC0D;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0D1B2A 0%, #0a2440 60%, #0D1B2A 100%);
+    padding: 60px 20px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(212,172,13,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .checkmark-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #D4AC0D, #f0c930);
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    box-shadow: 0 0 40px rgba(212,172,13,0.4);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(212,172,13,0.4); }
+    50% { box-shadow: 0 0 60px rgba(212,172,13,0.7); }
+  }
+
+  .hero h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #fff;
+    font-weight: 900;
+    line-height: 1.1;
+    max-width: 600px;
+    margin: 0 auto 16px;
+  }
+  .hero h2 span { color: #D4AC0D; }
+
+  .hero .subheadline {
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    color: #A9CCE3;
+    max-width: 580px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  /* URGENCY BODY */
+  .content-section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  .story-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,172,13,0.15);
+    border-radius: 16px;
+    padding: 36px;
+    margin-bottom: 32px;
+  }
+  .story-card h3 {
+    color: #D4AC0D;
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .story-card p {
+    color: #c0d8ed;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  .story-card p:last-child { margin-bottom: 0; }
+  .story-card strong { color: #fff; }
+  .story-card .highlight {
+    color: #D4AC0D;
+    font-weight: 700;
+  }
+
+  /* WHAT'S COMING */
+  .email-preview {
+    background: rgba(27,79,114,0.3);
+    border: 1px solid rgba(27,79,114,0.6);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .email-preview h4 {
+    color: #fff;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+  .email-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .email-item:last-child { border-bottom: none; }
+  .email-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+  .email-text strong { color: #fff; font-size: 0.95rem; display: block; }
+  .email-text span { color: #A9CCE3; font-size: 0.85rem; }
+
+  /* UPSELL */
+  .upsell-section {
+    background: linear-gradient(135deg, #1B4F72 0%, #0D1B2A 100%);
+    border: 2px solid #D4AC0D;
+    border-radius: 20px;
+    padding: 44px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .upsell-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('data:image/svg+xml,...') center/cover;
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  .upsell-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212,172,13,0.15);
+    border: 1px solid #D4AC0D;
+    border-radius: 50px;
+    padding: 6px 16px;
+    color: #D4AC0D;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .upsell-section h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: #fff;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .upsell-section h2 span { color: #D4AC0D; }
+
+  .upsell-section p {
+    color: #A9CCE3;
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0 auto 28px;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+  .benefit-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .benefit-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+  .benefit-text strong { color: #fff; font-size: 0.9rem; display: block; margin-bottom: 4px; }
+  .benefit-text span { color: #7aabcc; font-size: 0.8rem; line-height: 1.4; }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 20px 44px;
+    background: linear-gradient(135deg, #D4AC0D, #f0c930);
+    color: #0D1B2A;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 900;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 6px 30px rgba(212,172,13,0.4);
+    width: 100%;
+    max-width: 440px;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(212,172,13,0.55);
+    background: linear-gradient(135deg, #f0c930, #D4AC0D);
+  }
+
+  .cta-subtext {
+    margin-top: 12px;
+    font-size: 0.82rem;
+    color: #6a8fa8;
+  }
+
+  /* SOCIAL PROOF */
+  .social-proof {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .proof-badge {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+  }
+  .proof-badge .number { font-size: 1.4rem; font-weight: 900; color: #D4AC0D; }
+  .proof-badge .label { font-size: 0.75rem; color: #7aabcc; margin-top: 2px; }
+
+  /* FOOTER */
+  footer {
+    background: rgba(0,0,0,0.3);
+    color: #444;
+    text-align: center;
+    padding: 24px;
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 20px;
+  }
+  footer p { color: #3a5a72; }
+  footer a { color: #4a7a9b; text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .story-card, .upsell-section { padding: 24px 20px; }
+    .hero { padding: 40px 20px 36px; }
+    .benefits-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Listing Doctor — Amazon Listing Analyzer</h1>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="checkmark-circle">✓</div>
+  <h2>You're In. <span>Check Your Email.</span></h2>
+  <p class="subheadline">Your free Amazon listing analysis is on its way to your inbox right now. Give it 2 minutes — then open it before your competitors do.</p>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content-section">
+
+  <!-- URGENCY STORY -->
+  <div class="story-card">
+    <h3>⚡ Here's What's Happening Right Now</h3>
+    <p>
+      While you're reading this, <strong>your competitors are optimizing their listings.</strong> They're fixing their titles. They're rewriting their bullets. They're adding A+ content. And they're eating into your market share — one conversion at a time.
+    </p>
+    <p>
+      Most Amazon sellers lose <span class="highlight">$3,000–$15,000 per month</span> not because their product is bad — but because their listing doesn't convert. Bad title = Amazon buries you. Weak bullets = buyers click away. Missing A+ content = trust walks out the door.
+    </p>
+    <p>
+      <strong>Your analysis will show you exactly where you're leaking money.</strong> Don't file it away. Don't "get to it later." Read it the moment it hits your inbox — and take action on the #1 thing within 24 hours.
+    </p>
+    <p>
+      The sellers doing $100k/month on Amazon aren't smarter than you. They just fix their listings faster.
+    </p>
+  </div>
+
+  <!-- EMAIL PREVIEW -->
+  <div class="email-preview">
+    <h4>📬 What's in your inbox right now</h4>
+    <div class="email-item">
+      <span class="email-icon">📊</span>
+      <div class="email-text">
+        <strong>Your Complete Listing Grade Report</strong>
+        <span>Full breakdown of every score — title, bullets, description, images, and reviews</span>
+      </div>
+    </div>
+    <div class="email-item">
+      <span class="email-icon">🎯</span>
+      <div class="email-text">
+        <strong>Your #1 Priority Fix</strong>
+        <span>The single change most likely to move the needle on your conversion rate</span>
+      </div>
+    </div>
+    <div class="email-item">
+      <span class="email-icon">💰</span>
+      <div class="email-text">
+        <strong>Revenue Impact Estimate</strong>
+        <span>How much money you're leaving on the table with your current listing score</span>
+      </div>
+    </div>
+    <div class="email-item">
+      <span class="email-icon">📋</span>
+      <div class="email-text">
+        <strong>Step-By-Step Action Plan</strong>
+        <span>A specific, tactical checklist to boost your grade and your sales</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPSELL SECTION -->
+  <div class="upsell-section">
+    <div class="upsell-badge">⚡ One-Time Offer</div>
+    <h2>Want Us to <span>Fix Your Listing</span> For You?</h2>
+    <p>
+      Reading a report is one thing. <strong>Having an expert actually rewrite your listing</strong> — optimized for the Amazon algorithm AND human buyers — is a completely different game.
+    </p>
+
+    <div class="benefits-grid">
+      <div class="benefit-item">
+        <span class="benefit-icon">✍️</span>
+        <div class="benefit-text">
+          <strong>Full Title Rewrite</strong>
+          <span>Keyword-rich, algorithm-friendly, buyer-converting title</span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="benefit-icon">🎯</span>
+        <div class="benefit-text">
+          <strong>5 Bullet Points</strong>
+          <span>Benefit-led, persuasive bullets that answer buyer objections</span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="benefit-icon">📝</span>
+        <div class="benefit-text">
+          <strong>Full Description</strong>
+          <span>SEO-optimized description that builds trust and closes sales</span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="benefit-icon">🔑</span>
+        <div class="benefit-text">
+          <strong>Backend Keywords</strong>
+          <span>Hidden keyword strategy to capture every relevant search</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="#" class="cta-btn" onclick="return false;">Yes, Fix My Listing →</a>
+    <p class="cta-subtext">Results delivered in 48 hours. No fluff. No unanswered emails. Just a listing that converts.</p>
+
+    <div class="social-proof">
+      <div class="proof-badge">
+        <div class="number">2,400+</div>
+        <div class="label">Listings Analyzed</div>
+      </div>
+      <div class="proof-badge">
+        <div class="number">34%</div>
+        <div class="label">Avg. Conversion Lift</div>
+      </div>
+      <div class="proof-badge">
+        <div class="number">48hrs</div>
+        <div class="label">Turnaround Time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL PUSH -->
+  <div class="story-card">
+    <h3>🔥 Don't Let This Sit in Your Inbox</h3>
+    <p>
+      Every day your listing is suboptimal, you're paying Amazon PPC to drive traffic to a page that doesn't convert. You're spending real money to get people to bounce. That's the Amazon death spiral — and it's 100% avoidable.
+    </p>
+    <p>
+      <strong>The sellers who win on Amazon in 2025 are the ones who act fast.</strong> Check your email. Read the analysis. Make one fix today. Then come back for the next one.
+    </p>
+    <p>
+      You've already done the hardest part — you identified the problem. Now go fix it.
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  <p>Built for Amazon sellers who want more sales, not more guesswork.</p>
+  <p style="margin-top:8px">© 2025 Listing Doctor. <a href="/">Analyze another ASIN →</a></p>
+</footer>
+
+</body>
+</html>
