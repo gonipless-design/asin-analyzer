@@ -70,18 +70,36 @@ async function fetchAmazonData(asin) {
 
     const title = $('#productTitle').text().trim();
     const bullets = [];
-    $('#feature-bullets li span:not(.aok-hidden)').each((i, el) => {
-      const text = $(el).text().trim();
-      if (text && text.length > 5) bullets.push(text);
-    });
+    // Try multiple selectors for bullets
+    const bulletSelectors = [
+      '#feature-bullets li span:not(.aok-hidden)',
+      '#feature-bullets .a-list-item',
+      '.a-unordered-list.a-vertical .a-list-item'
+    ];
+    for (const sel of bulletSelectors) {
+      $(sel).each((i, el) => {
+        const text = $(el).text().trim();
+        if (text && text.length > 10) bullets.push(text);
+      });
+      if (bullets.length > 0) break;
+    }
     const description = $('#productDescription').text().trim() ||
                         $('#aplus').text().trim();
     const images = [];
-    $('img[data-a-image-name]').each((i, el) => images.push($(el).attr('src')));
+    // Count product images from thumbnail strip
+    $('#altImages img').each((i, el) => {
+      const src = $(el).attr('src') || '';
+      if (src && !src.includes('play-button') && !src.includes('video')) images.push(src);
+    });
+    if (images.length === 0) {
+      $('img[data-a-image-name]').each((i, el) => images.push($(el).attr('src')));
+    }
     const ratingText = $('#acrPopover').attr('title') || '';
     const rating = parseFloat(ratingText.match(/[\d.]+/)?.[0] || '0');
-    const ratingsText = $('#acrCustomerReviewText').text();
-    const ratingsTotal = parseInt(ratingsText.replace(/[^0-9]/g, '') || '0');
+    const ratingsText = ($('#acrCustomerReviewText').first().text() || '').trim();
+    // Extract first number sequence only (avoid duplicated DOM text)
+    const ratingsMatch = ratingsText.match(/([\d,]+)/);
+    const ratingsTotal = ratingsMatch ? parseInt(ratingsMatch[1].replace(/,/g, '')) : 0;
 
     return {
       title, bullets, description, images,
