@@ -36,10 +36,13 @@ async function saveLeadToSheets(email, firstName, asin, grade) {
     const credentials = JSON.parse(oauthCreds);
     const auth = new google.auth.OAuth2(credentials.client_id, credentials.client_secret);
     auth.setCredentials({ refresh_token: credentials.refresh_token });
+    // Set quota project to avoid "quota project required" 403 error
+    const projectId = process.env.GOOGLE_PROJECT_ID || 'project-2b78e051-11bf-4191-8b3';
+    auth.quotaProjectId = projectId;
     const sheets = google.sheets({ version: 'v4', auth });
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: 'Leads!A:E',
+      range: 'Sheet1!A:E',
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[new Date().toISOString(), firstName || '', email, asin, grade]],
