@@ -102,17 +102,18 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
 </table></td></tr></table></body></html>`;
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD }
-    });
-    await transporter.sendMail({
-      from: 'Listing Doctor <' + process.env.GMAIL_USER + '>',
-      to: email,
-      subject: gradeEmoji + ' Your listing scored ' + grade + ' - 10-point analysis inside',
-      html: htmlContent
-    });
-    console.log('Welcome email sent to ' + email);
+    const resendApiKey = process.env.BREVO_API_KEY;
+    if (resendApiKey) {
+      await axios.post('https://api.resend.com/emails', {
+        from: 'Listing Doctor <noreply@asinanalyzer.app>',
+        to: [email],
+        subject: gradeEmoji + ' Your listing scored ' + grade + ' - 10-point analysis inside',
+        html: htmlContent
+      }, {
+        headers: { 'Authorization': 'Bearer ' + resendApiKey, 'Content-Type': 'application/json' }
+      });
+      console.log('Welcome email sent to ' + email);
+    }
   } catch (err) {
     console.error('Failed to send welcome email:', err.message);
   }
@@ -393,13 +394,13 @@ app.post('/api/order', async (req, res) => {
   // Log the order
   console.log(`🛒 NEW ORDER REQUEST: ${firstName} | ${email} | ASIN: ${asin || 'N/A'} | Product: ${productName || 'N/A'}`);
 
-  // Notify Mike via Brevo
+  // Notify Mike via Resend
   try {
-    const brevoApiKey = process.env.BREVO_API_KEY;
-    if (brevoApiKey) {
-      await axios.post('https://api.brevo.com/v3/smtp/email', {
-        sender: { name: 'Listing Doctor Orders', email: 'noreply@asinanalyzer.app' },
-        to: [{ email: 'michaelgazzola1@gmail.com', name: 'Mike' }],
+    const resendApiKey = process.env.BREVO_API_KEY;
+    if (resendApiKey) {
+      await axios.post('https://api.resend.com/emails', {
+        from: 'Listing Doctor Orders <noreply@asinanalyzer.app>',
+        to: ['michaelgazzola1@gmail.com'],
         subject: `🛒 NEW ORDER REQUEST: ${firstName} wants a listing rewrite`,
         htmlContent: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:40px 20px">
@@ -421,7 +422,7 @@ app.post('/api/order', async (req, res) => {
           </div>
         `
       }, {
-        headers: { 'api-key': brevoApiKey, 'Content-Type': 'application/json' }
+        headers: { 'Authorization': 'Bearer ' + resendApiKey, 'Content-Type': 'application/json' }
       });
       console.log(`✅ Order notification sent to Mike for ${email}`);
     }
@@ -431,11 +432,11 @@ app.post('/api/order', async (req, res) => {
 
   // Confirm to customer
   try {
-    const brevoApiKey = process.env.BREVO_API_KEY;
-    if (brevoApiKey) {
-      await axios.post('https://api.brevo.com/v3/smtp/email', {
-        sender: { name: 'Listing Doctor', email: 'noreply@asinanalyzer.app' },
-        to: [{ email, name: firstName }],
+    const resendApiKey = process.env.BREVO_API_KEY;
+    if (resendApiKey) {
+      await axios.post('https://api.resend.com/emails', {
+        from: 'Listing Doctor <noreply@asinanalyzer.app>',
+        to: [email],
         subject: `✅ Got it, ${firstName} — we'll be in touch within 24 hours`,
         htmlContent: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:40px 20px">
@@ -466,7 +467,7 @@ app.post('/api/order', async (req, res) => {
           </div>
         `
       }, {
-        headers: { 'api-key': brevoApiKey, 'Content-Type': 'application/json' }
+        headers: { 'Authorization': 'Bearer ' + resendApiKey, 'Content-Type': 'application/json' }
       });
     }
   } catch (err) {
