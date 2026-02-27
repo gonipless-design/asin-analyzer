@@ -105,7 +105,7 @@ async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
     const resendApiKey = process.env.BREVO_API_KEY;
     if (resendApiKey) {
       await axios.post('https://api.resend.com/emails', {
-        from: 'Listing Doctor <noreply@asinanalyzer.app>',
+        from: 'Spencer @ Listing Doctor <spencer@asinanalyzer.app>',
         to: [email],
         subject: gradeEmoji + ' Your listing scored ' + grade + ' - 10-point analysis inside',
         html: htmlContent
@@ -399,7 +399,7 @@ app.post('/api/order', async (req, res) => {
     const resendApiKey = process.env.BREVO_API_KEY;
     if (resendApiKey) {
       await axios.post('https://api.resend.com/emails', {
-        from: 'Listing Doctor Orders <noreply@asinanalyzer.app>',
+        from: 'Spencer @ Listing Doctor <spencer@asinanalyzer.app>',
         to: ['michaelgazzola1@gmail.com'],
         subject: `🛒 NEW ORDER REQUEST: ${firstName} wants a listing rewrite`,
         htmlContent: `
@@ -435,7 +435,7 @@ app.post('/api/order', async (req, res) => {
     const resendApiKey = process.env.BREVO_API_KEY;
     if (resendApiKey) {
       await axios.post('https://api.resend.com/emails', {
-        from: 'Listing Doctor <noreply@asinanalyzer.app>',
+        from: 'Spencer @ Listing Doctor <spencer@asinanalyzer.app>',
         to: [email],
         subject: `✅ Got it, ${firstName} — we'll be in touch within 24 hours`,
         htmlContent: `
