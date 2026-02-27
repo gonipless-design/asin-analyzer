@@ -23,6 +23,36 @@ function saveLead(email, firstName, asin, grade) {
   fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2));
 }
 
+// ── Google Sheets lead backup (persistent, survives Railway restarts) ─
+async function saveLeadToSheets(email, firstName, asin, grade) {
+  try {
+    const spreadsheetId = process.env.GOOGLE_SHEETS_ID;
+    const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+    if (!spreadsheetId || !serviceAccountJson) {
+      console.log('Google Sheets not configured — skipping sheets backup');
+      return;
+    }
+    const { google } = require('googleapis');
+    const credentials = JSON.parse(serviceAccountJson);
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    const sheets = google.sheets({ version: 'v4', auth });
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: 'Leads!A:E',
+      valueInputOption: 'USER_ENTERED',
+      requestBody: {
+        values: [[new Date().toISOString(), firstName || '', email, asin, grade]],
+      },
+    });
+    console.log(`✅ Lead saved to Google Sheets: ${email}`);
+  } catch (err) {
+    console.error('Google Sheets backup error (non-fatal):', err.message);
+  }
+}
+
 async function sendWelcomeEmail(email, firstName, asin, grade, recs) {
   const name = firstName || 'Amazon Seller';
   const gradeEmoji = grade === 'A+' || grade === 'A' ? '🟢' : grade === 'B' ? '🔵' : grade === 'C' ? '🟡' : '🔴';
@@ -331,6 +361,9 @@ app.post('/api/unlock', async (req, res) => {
     const data = await fetchAmazonData(asin.trim().toUpperCase());
     const result = scoreListing(data);
     saveLead(email, firstName, asin, result.grade);
+    saveLeadToSheets(email, firstName, asin, result.grade).catch(err => {
+      console.error('Sheets backup error:', err.message);
+    });
     console.log(`New lead: ${firstName || 'N/A'} | ${email} | ASIN: ${asin} | Grade: ${result.grade}`);
     sendWelcomeEmail(email, firstName, asin, result.grade, result.recs).catch(err => {
       console.error('Background email error:', err.message);
