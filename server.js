@@ -377,7 +377,104 @@ app.post('/api/unlock', async (req, res) => {
   }
 });
 
+// ── Order Request Endpoint ─────────────────────────────────────────────────
+app.post('/api/order', async (req, res) => {
+  const { firstName, email, asin, productName, notes } = req.body;
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({ error: 'Valid email required' });
+  }
+  if (!firstName || firstName.trim().length < 1) {
+    return res.status(400).json({ error: 'First name required' });
+  }
+
+  // Log the order
+  console.log(`🛒 NEW ORDER REQUEST: ${firstName} | ${email} | ASIN: ${asin || 'N/A'} | Product: ${productName || 'N/A'}`);
+
+  // Notify Mike via Brevo
+  try {
+    const brevoApiKey = process.env.BREVO_API_KEY;
+    if (brevoApiKey) {
+      await axios.post('https://api.brevo.com/v3/smtp/email', {
+        sender: { name: 'Listing Doctor Orders', email: 'noreply@asinanalyzer.app' },
+        to: [{ email: 'michaelgazzola1@gmail.com', name: 'Mike' }],
+        subject: `🛒 NEW ORDER REQUEST: ${firstName} wants a listing rewrite`,
+        htmlContent: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:40px 20px">
+            <div style="background:#0D1B2A;border-radius:12px;padding:32px">
+              <h2 style="color:#D4AC0D;margin:0 0 24px">🛒 New Listing Rewrite Order</h2>
+              <table style="width:100%;border-collapse:collapse">
+                <tr><td style="color:#A9CCE3;padding:8px 0;width:140px">Name</td><td style="color:#fff;font-weight:700">${firstName}</td></tr>
+                <tr><td style="color:#A9CCE3;padding:8px 0">Email</td><td style="color:#fff;font-weight:700">${email}</td></tr>
+                <tr><td style="color:#A9CCE3;padding:8px 0">ASIN</td><td style="color:#D4AC0D;font-weight:700">${asin || 'Not provided'}</td></tr>
+                <tr><td style="color:#A9CCE3;padding:8px 0">Product</td><td style="color:#fff">${productName || 'Not provided'}</td></tr>
+                <tr><td style="color:#A9CCE3;padding:8px 0;vertical-align:top">Notes</td><td style="color:#fff">${notes || 'None'}</td></tr>
+                <tr><td style="color:#A9CCE3;padding:8px 0">Submitted</td><td style="color:#fff">${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PT</td></tr>
+              </table>
+              <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1)">
+                <p style="color:#A9CCE3;margin:0 0 8px;font-size:14px">Reply to this email or reach out directly to confirm the order and collect payment.</p>
+                <a href="mailto:${email}" style="display:inline-block;background:#D4AC0D;color:#0D1B2A;padding:12px 24px;border-radius:50px;font-weight:800;text-decoration:none;font-size:14px">Reply to ${firstName} →</a>
+              </div>
+            </div>
+          </div>
+        `
+      }, {
+        headers: { 'api-key': brevoApiKey, 'Content-Type': 'application/json' }
+      });
+      console.log(`✅ Order notification sent to Mike for ${email}`);
+    }
+  } catch (err) {
+    console.error('Order notification email error (non-fatal):', err.message);
+  }
+
+  // Confirm to customer
+  try {
+    const brevoApiKey = process.env.BREVO_API_KEY;
+    if (brevoApiKey) {
+      await axios.post('https://api.brevo.com/v3/smtp/email', {
+        sender: { name: 'Listing Doctor', email: 'noreply@asinanalyzer.app' },
+        to: [{ email, name: firstName }],
+        subject: `✅ Got it, ${firstName} — we'll be in touch within 24 hours`,
+        htmlContent: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:40px 20px">
+            <div style="background:#0D1B2A;border-radius:12px;overflow:hidden">
+              <div style="background:#D4AC0D;padding:24px 32px;text-align:center">
+                <h2 style="color:#0D1B2A;margin:0;font-size:22px">Your rewrite request is confirmed ✅</h2>
+              </div>
+              <div style="padding:32px">
+                <p style="color:#A9CCE3;font-size:16px;line-height:1.7;margin:0 0 20px">Hey ${firstName},</p>
+                <p style="color:#A9CCE3;font-size:15px;line-height:1.7;margin:0 0 20px">
+                  We've received your listing rewrite request${asin ? ` for <strong style="color:#D4AC0D">${asin}</strong>` : ''} and we'll be in touch within <strong style="color:#fff">24 hours</strong> to confirm details and get payment sorted.
+                </p>
+                <p style="color:#A9CCE3;font-size:15px;line-height:1.7;margin:0 0 28px">
+                  Once confirmed, your fully rewritten listing will be delivered in <strong style="color:#fff">48 hours</strong>. Clean. Keyword-rich. Built to convert.
+                </p>
+                <div style="background:rgba(212,172,13,0.1);border:1px solid rgba(212,172,13,0.3);border-radius:10px;padding:20px;margin-bottom:24px">
+                  <p style="color:#D4AC0D;font-weight:700;margin:0 0 8px">What happens next:</p>
+                  <ol style="color:#A9CCE3;font-size:14px;line-height:1.8;margin:0;padding-left:20px">
+                    <li>We email you within 24h to confirm scope &amp; collect payment ($297)</li>
+                    <li>We research your product, competitors, and keywords</li>
+                    <li>You get a full rewrite delivered in 48h with before/after comparison</li>
+                    <li>One free revision round if anything needs tweaking</li>
+                  </ol>
+                </div>
+                <p style="color:#666;font-size:13px;margin:0">Questions? Just reply to this email.<br><strong style="color:#888">The Listing Doctor Team</strong></p>
+              </div>
+            </div>
+          </div>
+        `
+      }, {
+        headers: { 'api-key': brevoApiKey, 'Content-Type': 'application/json' }
+      });
+    }
+  } catch (err) {
+    console.error('Order confirmation email error (non-fatal):', err.message);
+  }
+
+  res.json({ success: true });
+});
+
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.get('/thankyou', (req, res) => res.sendFile(path.join(__dirname, 'public', 'thankyou.html')));
+app.get('/order', (req, res) => res.sendFile(path.join(__dirname, 'public', 'order.html')));
 
 app.listen(PORT, () => console.log('ASIN Analyzer running on port ' + PORT));

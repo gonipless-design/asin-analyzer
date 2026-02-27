@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Your Listing Rewritten — Listing Doctor</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0D1B2A;
+    color: #fff;
+    min-height: 100vh;
+  }
+  header {
+    background: rgba(0,0,0,0.3);
+    padding: 16px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212,172,13,0.2);
+  }
+  header h1 { color: #D4AC0D; font-size: 1rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+  .hero {
+    background: linear-gradient(135deg, #0D1B2A 0%, #0a2440 60%, #0D1B2A 100%);
+    padding: 50px 20px 40px;
+    text-align: center;
+  }
+  .hero h2 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 900; line-height: 1.15; margin-bottom: 14px; }
+  .hero h2 span { color: #D4AC0D; }
+  .hero p { color: #A9CCE3; font-size: 1.05rem; max-width: 560px; margin: 0 auto; line-height: 1.65; }
+
+  .page-wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  /* WHAT YOU GET */
+  .includes-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,172,13,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  .includes-card h3 { color: #D4AC0D; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+  .include-item { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .include-item:last-child { border-bottom: none; }
+  .include-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .include-text strong { color: #fff; font-size: 0.95rem; display: block; margin-bottom: 3px; }
+  .include-text span { color: #7aabcc; font-size: 0.85rem; line-height: 1.45; }
+
+  /* PRICE */
+  .price-block {
+    text-align: center;
+    background: linear-gradient(135deg, #1B4F72 0%, #0D1B2A 100%);
+    border: 2px solid #D4AC0D;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  .price-block .label { color: #A9CCE3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .price-block .price { font-size: 3.2rem; font-weight: 900; color: #D4AC0D; line-height: 1; }
+  .price-block .price sup { font-size: 1.4rem; vertical-align: super; }
+  .price-block .price-sub { color: #7aabcc; font-size: 0.85rem; margin-top: 8px; }
+  .price-block .turnaround { margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; background: rgba(212,172,13,0.1); border: 1px solid rgba(212,172,13,0.3); border-radius: 50px; padding: 6px 16px; color: #D4AC0D; font-size: 0.82rem; font-weight: 700; }
+
+  /* FORM */
+  .order-form {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,172,13,0.2);
+    border-radius: 16px;
+    padding: 36px;
+    margin-bottom: 24px;
+  }
+  .order-form h3 { color: #fff; font-size: 1.2rem; font-weight: 800; margin-bottom: 24px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; color: #A9CCE3; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .form-group input, .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: #D4AC0D; }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(135deg, #D4AC0D, #f0c930);
+    color: #0D1B2A;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 6px 30px rgba(212,172,13,0.4);
+    margin-top: 8px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(212,172,13,0.55); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .form-disclaimer { text-align: center; color: #3a5a72; font-size: 0.8rem; margin-top: 12px; line-height: 1.5; }
+
+  /* SUCCESS STATE */
+  .success-state { display: none; text-align: center; padding: 40px 20px; }
+  .success-state .big-check { font-size: 4rem; margin-bottom: 16px; }
+  .success-state h3 { color: #D4AC0D; font-size: 1.6rem; font-weight: 900; margin-bottom: 12px; }
+  .success-state p { color: #A9CCE3; font-size: 1rem; line-height: 1.7; max-width: 480px; margin: 0 auto 20px; }
+  .back-link { color: #D4AC0D; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+  .back-link:hover { text-decoration: underline; }
+
+  /* ERROR */
+  .error-msg { color: #e74c3c; font-size: 0.85rem; margin-top: 8px; display: none; }
+
+  /* GUARANTEE */
+  .guarantee {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .guarantee-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .guarantee-text strong { color: #fff; display: block; margin-bottom: 4px; }
+  .guarantee-text span { color: #7aabcc; font-size: 0.88rem; line-height: 1.5; }
+
+  footer { background: rgba(0,0,0,0.3); color: #3a5a72; text-align: center; padding: 24px; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); }
+  footer a { color: #4a7a9b; text-decoration: none; }
+
+  @media (max-width: 580px) {
+    .form-row { grid-template-columns: 1fr; }
+    .order-form { padding: 24px 20px; }
+    .includes-card { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Listing Doctor &mdash; Amazon Listing Rewrite Service</h1>
+</header>
+
+<div class="hero">
+  <h2>Let Us <span>Fix Your Listing</span> While You Run Your Business</h2>
+  <p>You've got the diagnosis. Now hand it off. We'll rewrite your listing end-to-end — title, bullets, description, and backend keywords — in 48 hours.</p>
+</div>
+
+<div class="page-wrap">
+
+  <!-- WHAT'S INCLUDED -->
+  <div class="includes-card">
+    <h3>&#9989; Everything Included in Your Rewrite</h3>
+    <div class="include-item">
+      <span class="include-icon">&#9997;&#65039;</span>
+      <div class="include-text">
+        <strong>Full Title Rewrite</strong>
+        <span>150–200 characters, keyword-dense, written to rank AND convert on Amazon's algorithm</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <span class="include-icon">&#127919;</span>
+      <div class="include-text">
+        <strong>5 Benefit-First Bullet Points</strong>
+        <span>Objection-crushing, emotionally-driven bullets that turn browsers into buyers</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <span class="include-icon">&#128221;</span>
+      <div class="include-text">
+        <strong>Conversion-Focused Product Description</strong>
+        <span>Story + SEO. Written to build trust, answer objections, and close the sale</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <span class="include-icon">&#128273;</span>
+      <div class="include-text">
+        <strong>Backend Keyword Strategy</strong>
+        <span>Hidden search terms your competitors don't know you're targeting — filled to capacity</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <span class="include-icon">&#128202;</span>
+      <div class="include-text">
+        <strong>Before/After Comparison</strong>
+        <span>Side-by-side of old vs. new so you can see exactly what changed and why</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICE -->
+  <div class="price-block">
+    <div class="label">One-Time Investment</div>
+    <div class="price"><sup>$</sup>297</div>
+    <div class="price-sub">Per listing. Flat fee. No upsells, no surprises.</div>
+    <div class="turnaround">&#9889; Delivered in 48 hours</div>
+  </div>
+
+  <!-- GUARANTEE -->
+  <div class="guarantee">
+    <span class="guarantee-icon">&#128737;&#65039;</span>
+    <div class="guarantee-text">
+      <strong>100% Satisfaction Guarantee</strong>
+      <span>If you're not happy with the rewrite, we'll revise it until you are. One round of revisions included, no questions asked.</span>
+    </div>
+  </div>
+
+  <!-- ORDER FORM -->
+  <div class="order-form" id="orderFormWrap">
+    <h3>&#128640; Submit Your Order Request</h3>
+    <form id="orderForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="firstName" placeholder="Your first name" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="you@email.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>ASIN to Rewrite</label>
+        <input type="text" id="asin" placeholder="e.g. B08N5WRWNW" maxlength="10" style="text-transform:uppercase">
+      </div>
+      <div class="form-group">
+        <label>Product Name <span style="color:#3a5a72;font-weight:400;text-transform:none">(optional but helpful)</span></label>
+        <input type="text" id="productName" placeholder="e.g. Silicone Nipple Covers for Women">
+      </div>
+      <div class="form-group">
+        <label>Anything we should know? <span style="color:#3a5a72;font-weight:400;text-transform:none">(optional)</span></label>
+        <textarea id="notes" placeholder="Target audience, key benefits, competitors, what's not working..."></textarea>
+      </div>
+      <div class="error-msg" id="errorMsg"></div>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        Yes, Rewrite My Listing &rarr;
+      </button>
+      <p class="form-disclaimer">We'll email you within 24 hours to confirm your order and discuss payment. No charge until you're ready.</p>
+    </form>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-state" id="successState">
+    <div class="big-check">&#127881;</div>
+    <h3>You're in the queue!</h3>
+    <p>We've received your request and will email you within 24 hours to confirm details and get you started. Check your inbox — including spam.</p>
+    <a href="/" class="back-link">&#8592; Analyze another listing</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>&copy; 2025 Listing Doctor &middot; <a href="/">Analyze a listing for free &rarr;</a></p>
+</footer>
+
+<script>
+  // Pre-fill ASIN from URL param if coming from thankyou page
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('asin')) document.getElementById('asin').value = urlParams.get('asin').toUpperCase();
+  if (urlParams.get('name')) document.getElementById('firstName').value = urlParams.get('name');
+  if (urlParams.get('email')) document.getElementById('email').value = urlParams.get('email');
+
+  document.getElementById('asin').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+  });
+
+  document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    errorMsg.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const payload = {
+      firstName: document.getElementById('firstName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      asin: document.getElementById('asin').value.trim().toUpperCase(),
+      productName: document.getElementById('productName').value.trim(),
+      notes: document.getElementById('notes').value.trim()
+    };
+
+    try {
+      const res = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('orderFormWrap').style.display = 'none';
+        document.getElementById('successState').style.display = 'block';
+      } else {
+        errorMsg.textContent = data.error || 'Something went wrong. Please try again.';
+        errorMsg.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Yes, Rewrite My Listing →';
+      }
+    } catch (err) {
+      errorMsg.textContent = 'Network error. Please try again.';
+      errorMsg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Yes, Rewrite My Listing →';
+    }
+  });
+</script>
+</body>
+</html>

@@ -391,7 +391,7 @@
       </div>
     </div>
 
-    <a href="#" class="cta-btn" onclick="return false;">Yes, Fix My Listing &rarr;</a>
+    <a href="/order" class="cta-btn" id="orderBtn">Yes, Fix My Listing &rarr;</a>
     <p class="cta-subtext">Delivered in 48 hours. No fluff. No ghosting. Just a listing that earns its keep.</p>
 
     <div class="social-proof">
@@ -431,5 +431,23 @@
   <p style="margin-top:8px">&copy; 2025 Listing Doctor. <a href="/">Analyze another ASIN &rarr;</a></p>
 </footer>
 
+<script>
+  // Pass lead data to order page so form is pre-filled
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const asin = params.get('asin') || sessionStorage.getItem('ld_asin') || '';
+    const name = params.get('name') || sessionStorage.getItem('ld_name') || '';
+    const email = params.get('email') || sessionStorage.getItem('ld_email') || '';
+    const btn = document.getElementById('orderBtn');
+    if (btn) {
+      const orderParams = new URLSearchParams();
+      if (asin) orderParams.set('asin', asin);
+      if (name) orderParams.set('name', name);
+      if (email) orderParams.set('email', email);
+      const qs = orderParams.toString();
+      btn.href = '/order' + (qs ? '?' + qs : '');
+    }
+  })();
+</script>
 </body>
 </html>
