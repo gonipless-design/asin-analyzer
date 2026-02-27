@@ -27,17 +27,15 @@ function saveLead(email, firstName, asin, grade) {
 async function saveLeadToSheets(email, firstName, asin, grade) {
   try {
     const spreadsheetId = process.env.GOOGLE_SHEETS_ID;
-    const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-    if (!spreadsheetId || !serviceAccountJson) {
+    const oauthCreds = process.env.GOOGLE_OAUTH_CREDENTIALS;
+    if (!spreadsheetId || !oauthCreds) {
       console.log('Google Sheets not configured — skipping sheets backup');
       return;
     }
     const { google } = require('googleapis');
-    const credentials = JSON.parse(serviceAccountJson);
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-    });
+    const credentials = JSON.parse(oauthCreds);
+    const auth = new google.auth.OAuth2(credentials.client_id, credentials.client_secret);
+    auth.setCredentials({ refresh_token: credentials.refresh_token });
     const sheets = google.sheets({ version: 'v4', auth });
     await sheets.spreadsheets.values.append({
       spreadsheetId,
